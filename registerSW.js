@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/uni7s/sw.js', { scope: '/uni7s/' })})}
