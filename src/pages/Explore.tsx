@@ -18,7 +18,7 @@ const UNI_TYPES: University["type"][] = [
 const REMOTE_OPTS = ["voll", "teilweise", "kaum"] as const;
 
 export default function Explore() {
-  const { country, setCountry } = useApp();
+  const { country, setCountry, t } = useApp();
   const active: CountryCode = country ?? "AT";
   const [tab, setTab] = useState<Tab>("fields");
   const [q, setQ] = useState("");
@@ -45,7 +45,7 @@ export default function Explore() {
 
   return (
     <div className="flex flex-col gap-4 pt-2">
-      <h1 className="text-2xl font-bold">Entdecken</h1>
+      <h1 className="text-2xl font-bold">{t("explore.title")}</h1>
 
       <div className="flex flex-wrap gap-2">
         {COUNTRIES.map((c) => (
@@ -53,12 +53,10 @@ export default function Explore() {
             key={c.code}
             onClick={() => setCountry(c.code)}
             className={`flex items-center gap-1 rounded-full px-3 py-1.5 text-sm transition ${
-              active === c.code
-                ? "bg-brand-500/20 text-brand-200"
-                : "bg-white/5 text-slate-400"
+              active === c.code ? "bg-brand-500/20 text-brandtext" : "bg-surface2 text-muted"
             }`}
           >
-            {c.flag} {c.name}
+            {c.flag} {t(`country.${c.code}`)}
           </button>
         ))}
       </div>
@@ -66,16 +64,16 @@ export default function Explore() {
       <div className="glass flex rounded-2xl p-1">
         {(
           [
-            ["fields", "Studium"],
-            ["unis", "Unis"],
-            ["jobs", "Berufe"],
+            ["fields", t("explore.study")],
+            ["unis", t("explore.unis")],
+            ["jobs", t("explore.jobs")],
           ] as [Tab, string][]
         ).map(([key, label]) => (
           <button
             key={key}
             onClick={() => setTab(key)}
             className={`flex-1 rounded-xl py-2 text-sm font-medium transition ${
-              tab === key ? "bg-white/10 text-brand-200" : "text-slate-400"
+              tab === key ? "bg-surface2 text-brandtext" : "text-muted"
             }`}
           >
             {label}
@@ -86,22 +84,24 @@ export default function Explore() {
       <input
         value={q}
         onChange={(e) => setQ(e.target.value)}
-        placeholder="Suchen…"
-        className="glass w-full rounded-2xl px-4 py-3 text-sm outline-none placeholder:text-slate-500"
+        placeholder={t("explore.search")}
+        className="glass w-full rounded-2xl px-4 py-3 text-sm text-fg outline-none placeholder:text-faint"
       />
 
       {tab === "unis" && (
         <FilterRow
-          label="Typ"
-          options={UNI_TYPES.map((t) => ({ value: t, label: t }))}
+          label={t("explore.type")}
+          allLabel={t("explore.all")}
+          options={UNI_TYPES.map((ut) => ({ value: ut, label: ut }))}
           value={uniType}
           onChange={(v) => setUniType(v as University["type"] | null)}
         />
       )}
       {tab === "jobs" && (
         <FilterRow
-          label="Remote"
-          options={REMOTE_OPTS.map((r) => ({ value: r, label: r }))}
+          label={t("explore.remote")}
+          allLabel={t("explore.all")}
+          options={REMOTE_OPTS.map((r) => ({ value: r, label: t(`enum.${r}`) }))}
           value={remote}
           onChange={(v) => setRemote(v as (typeof REMOTE_OPTS)[number] | null)}
         />
@@ -109,17 +109,9 @@ export default function Explore() {
 
       <div className="space-y-3">
         {tab === "fields" &&
-          (fields.length ? (
-            fields.map((f) => <FieldCard key={f.id} field={f} />)
-          ) : (
-            <Empty />
-          ))}
+          (fields.length ? fields.map((f) => <FieldCard key={f.id} field={f} />) : <Empty />)}
         {tab === "unis" &&
-          (unis.length ? (
-            unis.map((u) => <UniCard key={u.id} uni={u} />)
-          ) : (
-            <Empty />
-          ))}
+          (unis.length ? unis.map((u) => <UniCard key={u.id} uni={u} />) : <Empty />)}
         {tab === "jobs" &&
           (jobs.length ? (
             jobs.map((j) => <JobCard key={j.id} job={j} country={active} />)
@@ -133,22 +125,22 @@ export default function Explore() {
 
 function FilterRow({
   label,
+  allLabel,
   options,
   value,
   onChange,
 }: {
   label: string;
+  allLabel: string;
   options: { value: string; label: string }[];
   value: string | null;
   onChange: (v: string | null) => void;
 }) {
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <span className="text-xs uppercase tracking-wide text-slate-500">
-        {label}
-      </span>
+      <span className="text-xs uppercase tracking-wide text-faint">{label}</span>
       <Pill active={value === null} onClick={() => onChange(null)}>
-        Alle
+        {allLabel}
       </Pill>
       {options.map((o) => (
         <Pill
@@ -176,7 +168,7 @@ function Pill({
     <button
       onClick={onClick}
       className={`rounded-full px-3 py-1 text-xs font-medium transition ${
-        active ? "bg-brand-500/25 text-brand-200" : "bg-white/5 text-slate-400"
+        active ? "bg-brand-500/25 text-brandtext" : "bg-surface2 text-muted"
       }`}
     >
       {children}
@@ -185,9 +177,6 @@ function Pill({
 }
 
 function Empty() {
-  return (
-    <p className="py-8 text-center text-sm text-slate-500">
-      Nichts gefunden – andere Suche, Filter oder Region probieren.
-    </p>
-  );
+  const { t } = useApp();
+  return <p className="py-8 text-center text-sm text-faint">{t("explore.empty")}</p>;
 }

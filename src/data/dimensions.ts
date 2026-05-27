@@ -1,5 +1,6 @@
 import type {
   DimensionKey,
+  Localized,
   PersonalityType,
   QuestionCategory,
 } from "../types";
@@ -42,14 +43,14 @@ export const DIMENSION_LABELS: Record<DimensionKey, string> = {
   motKnowledge: "Wissensdurst",
 };
 
-export const CATEGORY_LABELS: Record<QuestionCategory, string> = {
-  interests: "Interessen",
-  skills: "Fähigkeiten",
-  personality: "Persönlichkeit",
-  workstyle: "Arbeitsstil",
-  learnstyle: "Lernstil",
-  motivation: "Motivation",
-  environment: "Umgebung",
+export const CATEGORY_LABELS: Record<QuestionCategory, Localized> = {
+  interests: { de: "Interessen", en: "Interests" },
+  skills: { de: "Fähigkeiten", en: "Skills" },
+  personality: { de: "Persönlichkeit", en: "Personality" },
+  workstyle: { de: "Arbeitsstil", en: "Work style" },
+  learnstyle: { de: "Lernstil", en: "Learning style" },
+  motivation: { de: "Motivation", en: "Motivation" },
+  environment: { de: "Umgebung", en: "Environment" },
 };
 
 // Which dimensions roll up into each top-level category (for the radar/summary).
@@ -96,43 +97,55 @@ export const CATEGORY_DIMENSIONS: Record<QuestionCategory, DimensionKey[]> = {
 
 export const PERSONALITY_LABELS: Record<
   PersonalityType,
-  { name: string; emoji: string; blurb: string }
+  { name: Localized; emoji: string; blurb: Localized }
 > = {
   analytical: {
-    name: "Die analytische Denkerin / der analytische Denker",
+    name: { de: "Die/der analytische Denker:in", en: "The analytical thinker" },
     emoji: "🧠",
-    blurb:
-      "Du gehst Probleme logisch an, liebst Daten, Muster und durchdachte Lösungen. Komplexität schreckt dich nicht ab – sie reizt dich.",
+    blurb: {
+      de: "Du gehst Probleme logisch an, liebst Daten, Muster und durchdachte Lösungen. Komplexität schreckt dich nicht ab – sie reizt dich.",
+      en: "You approach problems logically and love data, patterns and well-thought-out solutions. Complexity doesn't scare you – it intrigues you.",
+    },
   },
   creative: {
-    name: "Die kreative Gestalterin / der kreative Gestalter",
+    name: { de: "Die/der kreative Gestalter:in", en: "The creative maker" },
     emoji: "🎨",
-    blurb:
-      "Du denkst in Ideen, Bildern und Möglichkeiten. Ausdruck, Design und originelle Lösungen sind dein Antrieb.",
+    blurb: {
+      de: "Du denkst in Ideen, Bildern und Möglichkeiten. Ausdruck, Design und originelle Lösungen sind dein Antrieb.",
+      en: "You think in ideas, images and possibilities. Expression, design and original solutions drive you.",
+    },
   },
   social: {
-    name: "Der soziale Mensch / die soziale Verbindung",
+    name: { de: "Der/die soziale Verbinder:in", en: "The social connector" },
     emoji: "🤝",
-    blurb:
-      "Menschen stehen für dich im Mittelpunkt. Du kommunizierst, hilfst und bringst Gruppen zusammen.",
+    blurb: {
+      de: "Menschen stehen für dich im Mittelpunkt. Du kommunizierst, hilfst und bringst Gruppen zusammen.",
+      en: "People are at the centre for you. You communicate, help and bring groups together.",
+    },
   },
   practical: {
-    name: "Die praktische Macherin / der praktische Macher",
+    name: { de: "Die/der praktische Macher:in", en: "The practical doer" },
     emoji: "🛠️",
-    blurb:
-      "Du packst an, willst greifbare Ergebnisse und verstehst, wie Dinge funktionieren. Hände und Kopf arbeiten zusammen.",
+    blurb: {
+      de: "Du packst an, willst greifbare Ergebnisse und verstehst, wie Dinge funktionieren. Hände und Kopf arbeiten zusammen.",
+      en: "You get stuck in, want tangible results and understand how things work. Hands and mind work together.",
+    },
   },
   enterprising: {
-    name: "Die unternehmerische Gestalterin / der unternehmerische Gestalter",
+    name: { de: "Die/der unternehmerische Gestalter:in", en: "The enterprising driver" },
     emoji: "🚀",
-    blurb:
-      "Du übernimmst Verantwortung, überzeugst andere und treibst Projekte voran. Chancen erkennst du schnell.",
+    blurb: {
+      de: "Du übernimmst Verantwortung, überzeugst andere und treibst Projekte voran. Chancen erkennst du schnell.",
+      en: "You take responsibility, persuade others and push projects forward. You spot opportunities quickly.",
+    },
   },
   scientific: {
-    name: "Die wissenschaftliche Forscherin / der wissenschaftliche Forscher",
+    name: { de: "Die/der wissenschaftliche Forscher:in", en: "The scientific researcher" },
     emoji: "🔬",
-    blurb:
-      "Du willst verstehen, warum Dinge sind, wie sie sind. Neugier, Genauigkeit und Tiefe treiben dich an.",
+    blurb: {
+      de: "Du willst verstehen, warum Dinge sind, wie sie sind. Neugier, Genauigkeit und Tiefe treiben dich an.",
+      en: "You want to understand why things are the way they are. Curiosity, precision and depth drive you.",
+    },
   },
 };
 

@@ -1,4 +1,5 @@
 import type { CountryCode } from "../types";
+import type { Lang } from "../store/storage";
 import { COUNTRY_BY_CODE } from "../data/countries";
 
 export function formatSalary(
@@ -12,9 +13,9 @@ export function formatSalary(
   return `${lo}–${fmt(range.max)} ${cur}`;
 }
 
-export function relativeDate(ts: number): string {
+export function relativeDate(ts: number, lang: Lang = "de"): string {
   const d = new Date(ts);
-  return d.toLocaleDateString("de-AT", {
+  return d.toLocaleDateString(lang === "en" ? "en-GB" : "de-AT", {
     day: "2-digit",
     month: "short",
     year: "numeric",

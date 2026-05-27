@@ -1,4 +1,5 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { useApp } from "../store/AppContext";
 
 export function Button({
   children,
@@ -13,8 +14,8 @@ export function Button({
   const variants = {
     primary:
       "bg-gradient-to-r from-brand-500 to-accent-500 text-white shadow-lg shadow-brand-500/25",
-    ghost: "glass text-slate-100 hover:border-brand-400/40",
-    subtle: "bg-white/5 text-slate-300 hover:bg-white/10",
+    ghost: "glass text-fg hover:border-brand-400/40",
+    subtle: "bg-surface2 text-muted hover:text-fg",
   };
   return (
     <button className={`${base} ${variants[variant]} ${className}`} {...rest}>
@@ -54,12 +55,12 @@ export function ScoreBar({
   return (
     <div>
       {(label || right) && (
-        <div className="mb-1 flex items-center justify-between text-sm text-slate-300">
+        <div className="mb-1 flex items-center justify-between text-sm text-muted">
           <span>{label}</span>
-          <span className="tabular-nums text-slate-400">{right}</span>
+          <span className="tabular-nums text-faint">{right}</span>
         </div>
       )}
-      <div className="h-2.5 w-full overflow-hidden rounded-full bg-white/10">
+      <div className="h-2.5 w-full overflow-hidden rounded-full bg-surface2">
         <div
           className="h-full rounded-full bg-gradient-to-r from-brand-400 to-accent-400 transition-[width] duration-700"
           style={{ width: `${Math.max(3, value)}%` }}
@@ -77,11 +78,11 @@ export function Chip({
   tone?: "default" | "good" | "warn" | "bad" | "brand";
 }) {
   const tones = {
-    default: "bg-white/8 text-slate-300",
-    good: "bg-emerald-500/15 text-emerald-300",
-    warn: "bg-amber-500/15 text-amber-300",
-    bad: "bg-rose-500/15 text-rose-300",
-    brand: "bg-brand-500/15 text-brand-300",
+    default: "bg-surface2 text-muted",
+    good: "bg-emerald-500/15 text-emerald-500",
+    warn: "bg-amber-500/15 text-amber-500",
+    bad: "bg-rose-500/15 text-rose-500",
+    brand: "bg-brand-500/15 text-brandtext",
   };
   return (
     <span
@@ -93,6 +94,11 @@ export function Chip({
 }
 
 export function ScorePill({ value }: { value: number }) {
+  const { t } = useApp();
   const tone = value >= 75 ? "good" : value >= 50 ? "brand" : "default";
-  return <Chip tone={tone}>{value}% Match</Chip>;
+  return (
+    <Chip tone={tone}>
+      {value}% {t("card.match")}
+    </Chip>
+  );
 }

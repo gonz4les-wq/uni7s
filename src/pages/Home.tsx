@@ -5,7 +5,7 @@ import { useApp } from "../store/AppContext";
 import { Button, Card } from "../components/ui";
 
 export default function Home() {
-  const { country, setCountry, results } = useApp();
+  const { country, setCountry, results, t } = useApp();
   const navigate = useNavigate();
 
   return (
@@ -15,20 +15,17 @@ export default function Home() {
         animate={{ opacity: 1, y: 0 }}
         className="pt-6 text-center"
       >
-        <div className="text-sm font-semibold uppercase tracking-widest text-brand-300">
-          Maturaprojekt 2026
+        <div className="text-sm font-semibold uppercase tracking-widest text-brandtext">
+          {t("home.badge")}
         </div>
         <h1 className="mt-2 text-5xl font-black tracking-tight">
           f<span className="text-brand-400">(you)</span>ture
         </h1>
-        <p className="mx-auto mt-3 max-w-sm text-slate-400">
-          Entdecke in wenigen Minuten, was zu dir passt – Studienrichtungen,
-          Universitäten und Karrierewege, abgestimmt auf dein Profil.
-        </p>
+        <p className="mx-auto mt-3 max-w-sm text-muted">{t("home.tagline")}</p>
       </motion.div>
 
       <Card>
-        <h2 className="mb-3 font-semibold">In welcher Region suchst du?</h2>
+        <h2 className="mb-3 font-semibold">{t("home.region")}</h2>
         <div className="grid grid-cols-2 gap-3">
           {COUNTRIES.map((c) => (
             <button
@@ -37,11 +34,11 @@ export default function Home() {
               className={`flex items-center gap-3 rounded-2xl border p-3 text-left transition ${
                 country === c.code
                   ? "border-brand-400 bg-brand-500/10"
-                  : "border-white/10 hover:border-white/25"
+                  : "border-line hover:border-brand-400/40"
               }`}
             >
               <span className="text-3xl">{c.flag}</span>
-              <span className="font-medium">{c.name}</span>
+              <span className="font-medium">{t(`country.${c.code}`)}</span>
             </button>
           ))}
         </div>
@@ -52,18 +49,18 @@ export default function Home() {
         onClick={() => navigate("/quiz")}
         className="w-full py-4 text-lg"
       >
-        {country ? "Quiz starten →" : "Zuerst Region wählen"}
+        {country ? `${t("home.start")} →` : t("home.pickRegion")}
       </Button>
 
       <div className="grid grid-cols-3 gap-3 text-center text-sm">
         {[
-          { n: "40", l: "Fragen für dich" },
-          { n: "6", l: "Fragetypen" },
-          { n: "5 Min", l: "Dauer" },
-        ].map((s) => (
-          <Card key={s.l} className="!p-3">
-            <div className="text-xl font-bold text-brand-300">{s.n}</div>
-            <div className="text-xs text-slate-400">{s.l}</div>
+          { n: "40", l: t("home.stat.questions") },
+          { n: "6", l: t("home.stat.types") },
+          { n: t("home.stat.min"), l: t("home.stat.duration") },
+        ].map((s, i) => (
+          <Card key={i} className="!p-3">
+            <div className="text-xl font-bold text-brandtext">{s.n}</div>
+            <div className="text-xs text-muted">{s.l}</div>
           </Card>
         ))}
       </div>
@@ -72,13 +69,12 @@ export default function Home() {
         <Card onClick={() => navigate("/dashboard")}>
           <div className="flex items-center justify-between">
             <div>
-              <div className="font-semibold">Dein letztes Ergebnis</div>
-              <div className="text-sm text-slate-400">
-                {results.length} gespeicherte Auswertung
-                {results.length > 1 ? "en" : ""}
+              <div className="font-semibold">{t("home.lastResult")}</div>
+              <div className="text-sm text-muted">
+                {t("home.savedCount", { n: results.length })}
               </div>
             </div>
-            <span className="text-brand-300">→</span>
+            <span className="text-brandtext">→</span>
           </div>
         </Card>
       )}

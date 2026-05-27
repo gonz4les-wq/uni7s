@@ -7,6 +7,7 @@ import Result from "./pages/Result";
 import Explore from "./pages/Explore";
 import Compare from "./pages/Compare";
 import Dashboard from "./pages/Dashboard";
+import Settings from "./pages/Settings";
 
 const basename = import.meta.env.BASE_URL.replace(/\/$/, "");
 
@@ -22,6 +23,7 @@ export default function App() {
             <Route path="/explore" element={<Explore />} />
             <Route path="/compare" element={<Compare />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/settings" element={<Settings />} />
           </Route>
         </Routes>
       </BrowserRouter>

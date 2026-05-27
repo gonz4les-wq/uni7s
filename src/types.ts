@@ -72,9 +72,15 @@ export type QuestionType =
   | "priorities" // rank / order cards
   | "skillmatch"; // self-rate several skills
 
+// Bilingual string (English optional, falls back to German).
+export interface Localized {
+  de: string;
+  en?: string;
+}
+
 export interface ChoiceOption {
   id: string;
-  label: string;
+  label: Localized;
   emoji?: string;
   // dimension contributions when this option is chosen
   effect: DimensionVector;
@@ -84,8 +90,8 @@ export interface Question {
   id: string;
   category: QuestionCategory;
   type: QuestionType;
-  prompt: string;
-  subtitle?: string;
+  prompt: Localized;
+  subtitle?: Localized;
   // weight of this question relative to others (default 1)
   weight?: number;
   // multiple / visual / wouldyourather / priorities
@@ -93,10 +99,10 @@ export interface Question {
   // slider: dimension that grows with the value, optional inverse dimension
   sliderDimension?: DimensionKey;
   sliderInverse?: DimensionKey;
-  sliderMinLabel?: string;
-  sliderMaxLabel?: string;
+  sliderMinLabel?: Localized;
+  sliderMaxLabel?: Localized;
   // skillmatch: each item is a 0..100 self-rating onto a dimension
-  skills?: { id: string; label: string; dimension: DimensionKey }[];
+  skills?: { id: string; label: Localized; dimension: DimensionKey }[];
 }
 
 // What the user submitted for a single question.

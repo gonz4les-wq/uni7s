@@ -2,6 +2,9 @@ import type { CountryCode, SavedResult } from "../types";
 
 const KEY = "fyouture.state.v1";
 
+export type ThemeMode = "dark" | "light";
+export type Lang = "de" | "en";
+
 export interface Favorites {
   fields: string[];
   jobs: string[];
@@ -12,12 +15,16 @@ export interface PersistedState {
   country: CountryCode | null;
   results: SavedResult[];
   favorites: Favorites;
+  theme: ThemeMode;
+  lang: Lang;
 }
 
 export const EMPTY_STATE: PersistedState = {
   country: null,
   results: [],
   favorites: { fields: [], jobs: [], universities: [] },
+  theme: "dark",
+  lang: "de",
 };
 
 export function loadState(): PersistedState {
@@ -33,6 +40,8 @@ export function loadState(): PersistedState {
         jobs: parsed.favorites?.jobs ?? [],
         universities: parsed.favorites?.universities ?? [],
       },
+      theme: parsed.theme === "light" ? "light" : "dark",
+      lang: parsed.lang === "en" ? "en" : "de",
     };
   } catch {
     return EMPTY_STATE;

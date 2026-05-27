@@ -21,7 +21,7 @@ function FavButton({
         e.stopPropagation();
         toggleFavorite(kind, id);
       }}
-      className="text-xl transition active:scale-90"
+      className="shrink-0 text-xl transition active:scale-90"
       aria-label="Favorit"
     >
       <span className={active ? "" : "opacity-30 grayscale"}>⭐</span>
@@ -36,6 +36,7 @@ export function FieldCard({
   field: StudyField;
   score?: number;
 }) {
+  const { t } = useApp();
   const [open, setOpen] = useState(false);
   return (
     <Card>
@@ -50,12 +51,12 @@ export function FieldCard({
             <Chip>{field.category}</Chip>
             {score != null && <ScorePill value={score} />}
           </div>
-          <p className="mt-2 text-sm text-slate-400">{field.description}</p>
+          <p className="mt-2 text-sm text-muted">{field.description}</p>
           <button
             onClick={() => setOpen((o) => !o)}
-            className="mt-2 text-sm text-brand-300"
+            className="mt-2 text-sm text-brandtext"
           >
-            {open ? "weniger" : "verwandte Berufe"}
+            {open ? t("card.less") : t("card.relatedJobs")}
           </button>
           <AnimatePresence>
             {open && (
@@ -90,6 +91,7 @@ export function JobCard({
   country: CountryCode;
   score?: number;
 }) {
+  const { t } = useApp();
   const [open, setOpen] = useState(false);
   const outlookTone =
     job.outlook === "wachsend" ? "good" : job.outlook === "stabil" ? "brand" : "warn";
@@ -104,15 +106,15 @@ export function JobCard({
           </div>
           <div className="mt-1 flex flex-wrap items-center gap-2">
             {score != null && <ScorePill value={score} />}
-            <Chip tone={outlookTone as never}>{job.outlook}</Chip>
+            <Chip tone={outlookTone as never}>{t(`enum.${job.outlook}`)}</Chip>
             <Chip>{formatSalary(country, job.salary[country])}</Chip>
           </div>
-          <p className="mt-2 text-sm text-slate-400">{job.description}</p>
+          <p className="mt-2 text-sm text-muted">{job.description}</p>
           <button
             onClick={() => setOpen((o) => !o)}
-            className="mt-2 text-sm text-brand-300"
+            className="mt-2 text-sm text-brandtext"
           >
-            {open ? "weniger" : "Details"}
+            {open ? t("card.less") : t("card.details")}
           </button>
           <AnimatePresence>
             {open && (
@@ -123,17 +125,20 @@ export function JobCard({
                 className="overflow-hidden"
               >
                 <div className="mt-3 grid grid-cols-2 gap-3 text-sm">
-                  <Stat label="Nachfrage" value={job.demand[country] ?? "k. A."} />
-                  <Stat label="Remote" value={job.remote} />
                   <Stat
-                    label="Work-Life"
+                    label={t("card.demand")}
+                    value={job.demand[country] ? t(`enum.${job.demand[country]}`) : t("enum.k.A.")}
+                  />
+                  <Stat label={t("card.remote")} value={t(`enum.${job.remote}`)} />
+                  <Stat
+                    label={t("card.wlb")}
                     value={"●".repeat(job.workLifeBalance) + "○".repeat(5 - job.workLifeBalance)}
                   />
-                  <Stat label="Gehalt" value={formatSalary(country, job.salary[country])} />
+                  <Stat label={t("card.salary")} value={formatSalary(country, job.salary[country])} />
                 </div>
                 <div className="mt-3">
-                  <div className="text-xs uppercase tracking-wide text-slate-500">
-                    Typische Arbeitgeber
+                  <div className="text-xs uppercase tracking-wide text-faint">
+                    {t("card.employers")}
                   </div>
                   <div className="mt-1 flex flex-wrap gap-2">
                     {job.companies.map((c) => (
@@ -157,13 +162,14 @@ export function UniCard({
   uni: University;
   score?: number;
 }) {
+  const { t } = useApp();
   const [open, setOpen] = useState(false);
   return (
     <Card>
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <h3 className="font-semibold">{uni.name}</h3>
-          <div className="text-sm text-slate-400">
+          <div className="text-sm text-muted">
             📍 {uni.city} · {uni.type}
           </div>
         </div>
@@ -176,12 +182,12 @@ export function UniCard({
           <Chip key={l}>{l}</Chip>
         ))}
       </div>
-      <p className="mt-2 text-sm text-slate-400">{uni.description}</p>
+      <p className="mt-2 text-sm text-muted">{uni.description}</p>
       <button
         onClick={() => setOpen((o) => !o)}
-        className="mt-2 text-sm text-brand-300"
+        className="mt-2 text-sm text-brandtext"
       >
-        {open ? "weniger" : "mehr"}
+        {open ? t("card.less") : t("card.more")}
       </button>
       <AnimatePresence>
         {open && (
@@ -192,17 +198,17 @@ export function UniCard({
             className="overflow-hidden"
           >
             <div className="mt-3 space-y-2 text-sm">
-              <Detail label="Stärken" value={uni.strengths.join(", ")} />
-              <Detail label="Zulassung" value={uni.admission} />
-              <Detail label="International" value={uni.international} />
+              <Detail label={t("card.strengths")} value={uni.strengths.join(", ")} />
+              <Detail label={t("card.admission")} value={uni.admission} />
+              <Detail label={t("card.international")} value={uni.international} />
             </div>
             <a
               href={uni.website}
               target="_blank"
               rel="noreferrer"
-              className="mt-3 inline-block text-sm font-medium text-brand-300"
+              className="mt-3 inline-block text-sm font-medium text-brandtext"
             >
-              Website öffnen ↗
+              {t("card.website")} ↗
             </a>
           </motion.div>
         )}
@@ -213,8 +219,8 @@ export function UniCard({
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl bg-white/5 p-2">
-      <div className="text-xs text-slate-500">{label}</div>
+    <div className="rounded-xl bg-surface2 p-2">
+      <div className="text-xs text-faint">{label}</div>
       <div className="font-medium">{value}</div>
     </div>
   );
@@ -223,10 +229,8 @@ function Stat({ label, value }: { label: string; value: string }) {
 function Detail({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <span className="text-xs uppercase tracking-wide text-slate-500">
-        {label}:{" "}
-      </span>
-      <span className="text-slate-300">{value}</span>
+      <span className="text-xs uppercase tracking-wide text-faint">{label}: </span>
+      <span className="text-muted">{value}</span>
     </div>
   );
 }

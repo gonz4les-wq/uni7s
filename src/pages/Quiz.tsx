@@ -16,7 +16,7 @@ import { Button } from "../components/ui";
 
 export default function Quiz() {
   const navigate = useNavigate();
-  const { country, saveResult } = useApp();
+  const { country, saveResult, t } = useApp();
   const questions = useMemo(() => selectQuestions(40), []);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
@@ -65,18 +65,18 @@ export default function Quiz() {
       <div className="safe-top flex items-center gap-3 pt-2">
         <button
           onClick={() => (step === 0 ? navigate("/") : setStep(step - 1))}
-          className="text-2xl text-slate-400"
-          aria-label="zurück"
+          className="text-2xl text-muted"
+          aria-label="back"
         >
           ←
         </button>
-        <div className="h-2 flex-1 overflow-hidden rounded-full bg-white/10">
+        <div className="h-2 flex-1 overflow-hidden rounded-full bg-surface2">
           <div
             className="h-full rounded-full bg-gradient-to-r from-brand-400 to-accent-400 transition-[width] duration-300"
             style={{ width: `${progress}%` }}
           />
         </div>
-        <span className="text-sm tabular-nums text-slate-400">
+        <span className="text-sm tabular-nums text-muted">
           {step + 1}/{total}
         </span>
       </div>
@@ -92,13 +92,11 @@ export default function Quiz() {
       </div>
 
       {step === 0 && (
-        <p className="mt-4 text-center text-xs text-slate-500">
-          Tippe einfach auf die Antwort, die am ehesten passt.
-        </p>
+        <p className="mt-4 text-center text-xs text-faint">{t("quiz.hint")}</p>
       )}
       {answers.length >= total && (
         <Button className="mt-4 w-full" onClick={() => finish(answers)}>
-          Auswertung ansehen
+          {t("quiz.seeResult")}
         </Button>
       )}
     </div>
