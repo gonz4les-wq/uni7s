@@ -20,7 +20,7 @@ export default function Layout() {
 
       {!hideNav && (
         <nav className="safe-bottom fixed inset-x-0 bottom-0 z-20 mx-auto max-w-xl px-4 pb-2">
-          <div className="glass flex items-center justify-around rounded-3xl px-2 py-2">
+          <div className="glass-blur flex items-center justify-around rounded-3xl px-2 py-2">
             {NAV.map((n) => (
               <NavLink
                 key={n.to}

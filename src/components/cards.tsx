@@ -41,7 +41,7 @@ export function FieldCard({
     <Card>
       <div className="flex items-start gap-3">
         <span className="text-3xl">{field.emoji}</span>
-        <div className="flex-1">
+        <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between gap-2">
             <h3 className="font-semibold">{field.name}</h3>
             <FavButton kind="fields" id={field.id} />
@@ -97,7 +97,7 @@ export function JobCard({
     <Card>
       <div className="flex items-start gap-3">
         <span className="text-3xl">{job.emoji}</span>
-        <div className="flex-1">
+        <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between gap-2">
             <h3 className="font-semibold">{job.title}</h3>
             <FavButton kind="jobs" id={job.id} />
@@ -161,7 +161,7 @@ export function UniCard({
   return (
     <Card>
       <div className="flex items-start justify-between gap-2">
-        <div>
+        <div className="min-w-0">
           <h3 className="font-semibold">{uni.name}</h3>
           <div className="text-sm text-slate-400">
             📍 {uni.city} · {uni.type}
