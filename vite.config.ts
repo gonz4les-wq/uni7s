@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
 import { VitePWA } from "vite-plugin-pwa";
 
 // On GitHub Pages the app is served from /<repo>/, on Vercel from /.
@@ -10,13 +11,16 @@ export default defineConfig({
   base,
   plugins: [
     react(),
+    tailwindcss(),
     VitePWA({
       registerType: "autoUpdate",
       includeAssets: ["favicon.svg", "apple-touch-icon.png"],
       manifest: {
-        name: "uni7s",
-        short_name: "uni7s",
-        description: "uni7s app",
+        name: "f(you)ture",
+        short_name: "f(you)ture",
+        description:
+          "Entdecke deine Interessen, passende Studienrichtungen, Universitäten und Karrierewege.",
+        lang: "de",
         theme_color: "#0f172a",
         background_color: "#0f172a",
         display: "standalone",

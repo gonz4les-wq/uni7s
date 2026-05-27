@@ -1,24 +1,30 @@
-import { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AppProvider } from "./store/AppContext";
+import Layout from "./components/Layout";
+import Home from "./pages/Home";
+import Quiz from "./pages/Quiz";
+import Result from "./pages/Result";
+import Explore from "./pages/Explore";
+import Compare from "./pages/Compare";
+import Dashboard from "./pages/Dashboard";
+
+const basename = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 export default function App() {
-  const [ready] = useState(true);
-
   return (
-    <main className="app">
-      <div className="card">
-        <h1>uni7s</h1>
-        <p className="subtitle">
-          PWA-Grundlage steht. Läuft im Browser, auf Vercel und GitHub Pages –
-          installierbar auf dem iPhone.
-        </p>
-        <ul className="checklist">
-          <li>Vite + React + TypeScript</li>
-          <li>Service Worker &amp; offline-fähig</li>
-          <li>Web App Manifest (Add to Home Screen)</li>
-          <li>Bereit für deinen App-Prompt</li>
-        </ul>
-        <span className={ready ? "badge ok" : "badge"}>bereit</span>
-      </div>
-    </main>
+    <AppProvider>
+      <BrowserRouter basename={basename}>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/quiz" element={<Quiz />} />
+            <Route path="/result/:id" element={<Result />} />
+            <Route path="/explore" element={<Explore />} />
+            <Route path="/compare" element={<Compare />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AppProvider>
   );
 }
